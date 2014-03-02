@@ -1,0 +1,4 @@
+1. how to generate the qrc_resources.py
+
+pyrcc5 resources.qrc -o qrc_resources.py
+
