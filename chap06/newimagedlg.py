@@ -15,8 +15,8 @@ from __future__ import unicode_literals
 from future_builtins import *
 
 from PyQt5.QtCore import (QVariant, Qt)
-from PyQt5.QtWidgets import (QApplication, QBrush, QColorDialog, QDialog,
-         QPixmap)
+from PyQt5.QtWidgets import (QApplication, QColorDialog, QDialog)
+from PyQt5.QtGui import QBrush, QPixmap
 from PyQt5.QtPrintSupport import QPrinter, QPrintDialog
 import ui_newimagedlg
 
