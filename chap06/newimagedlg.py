@@ -16,7 +16,7 @@ from future_builtins import *
 
 from PyQt5.QtCore import (QVariant, Qt)
 from PyQt5.QtWidgets import (QApplication, QColorDialog, QDialog)
-from PyQt5.QtGui import QBrush, QPixmap
+from PyQt5.QtGui import QBrush, QPixmap, QPainter
 from PyQt5.QtPrintSupport import QPrinter, QPrintDialog
 import ui_newimagedlg
 
@@ -45,10 +45,9 @@ class NewImageDlg(QDialog, ui_newimagedlg.Ui_NewImageDlg):
                 (Qt.DiagCrossPattern, "Diagonal Cross")):
             self.brushComboBox.addItem(text, QVariant(value))
 
-        self.connect(self.colorButton, SIGNAL("clicked()"),
-                     self.getColor)
-        self.connect(self.brushComboBox, SIGNAL("activated(int)"),
-                     self.setColor)
+        self.colorButton.clicked.connect(self.getColor)
+        self.brushComboBox.activated.connect(self.setColor)
+
         self.setColor()
         self.widthSpinBox.setFocus()
 
@@ -74,7 +73,7 @@ class NewImageDlg(QDialog, ui_newimagedlg.Ui_NewImageDlg):
     def _makePixmap(self, width, height):
         pixmap = QPixmap(width, height)
         style = self.brushComboBox.itemData(
-                self.brushComboBox.currentIndex()).toInt()[0]
+                self.brushComboBox.currentIndex())
         brush = QBrush(self.color, Qt.BrushStyle(style))
         painter = QPainter(pixmap)
         painter.fillRect(pixmap.rect(), Qt.white)

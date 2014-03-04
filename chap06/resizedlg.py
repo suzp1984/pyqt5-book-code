@@ -14,8 +14,8 @@ from __future__ import print_function
 from __future__ import unicode_literals
 from future_builtins import *
 
-from PyQt4.QtCore import (Qt, SIGNAL)
-from PyQt4.QtGui import (QApplication, QDialog, QDialogButtonBox,
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import (QApplication, QDialog, QDialogButtonBox,
         QGridLayout, QLabel, QSpinBox)
 
 
@@ -49,8 +49,10 @@ class ResizeDlg(QDialog):
         layout.addWidget(buttonBox, 2, 0, 1, 2)
         self.setLayout(layout)
 
-        self.connect(buttonBox, SIGNAL("accepted()"), self.accept)
-        self.connect(buttonBox, SIGNAL("rejected()"), self.reject)
+        buttonBox.accepted.connect(self.accept)
+        buttonBox.rejected.connect(self.reject)
+#        self.connect(buttonBox, SIGNAL("accepted()"), self.accept)
+#        self.connect(buttonBox, SIGNAL("rejected()"), self.reject)
 
         self.setWindowTitle("Image Changer - Resize")
 

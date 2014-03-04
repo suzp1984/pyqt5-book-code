@@ -157,11 +157,12 @@ class MainWindow(QMainWindow):
                                  (editUnMirrorAction, True))
 
         settings = QSettings()
+        self.recentFiles = []
         #self.recentFiles = settings.value("RecentFiles").toStringList()
-        self.recentFiles = settings.value("RecentFiles")
-        self.restoreGeometry(
-                settings.value("MainWindow/Geometry").toByteArray())
-        self.restoreState(settings.value("MainWindow/State"))
+        #self.recentFiles = settings.value("RecentFiles")
+        #self.restoreGeometry(
+        #        settings.value("MainWindow/Geometry").toByteArray())
+        #self.restoreState(settings.value("MainWindow/State"))
         
         self.setWindowTitle("Image Changer")
         self.updateFileMenu()

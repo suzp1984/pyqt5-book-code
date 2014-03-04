@@ -2,3 +2,8 @@
 
 pyrcc5 resources.qrc -o qrc_resources.py
 
+--------
+Bugs:
+
+1. newimagedlg.py
+QVariant how to?
