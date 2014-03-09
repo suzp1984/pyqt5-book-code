@@ -109,7 +109,7 @@ class MainWindow(QMainWindow):
 
 
     def createAction(self, text, slot=None, shortcut=None, icon=None,
-                     tip=None, checkable=False, signal="triggered()"):
+                     tip=None, checkable=False, signal="triggered"):
         action = QAction(text, self)
         if icon is not None:
             action.setIcon(QIcon(":/{0}.png".format(icon)))
@@ -119,7 +119,8 @@ class MainWindow(QMainWindow):
             action.setToolTip(tip)
             action.setStatusTip(tip)
         if slot is not None:
-            self.connect(action, SIGNAL(signal), slot)
+            getattr(action, signal).connect(slot)
+            #self.connect(action, SIGNAL(signal), slot)
         if checkable:
             action.setCheckable(True)
         return action

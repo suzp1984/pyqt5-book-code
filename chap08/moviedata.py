@@ -20,9 +20,12 @@ import copy_reg
 import pickle
 import gzip
 from PyQt5.QtCore import (QDataStream, QDate, QFile, QFileInfo,
-        QIODevice, QTextStream, Qt)
-from PyQt5.QtXml import (QDomDocument, QDomNode, QXmlDefaultHandler,
-        QXmlInputSource, QXmlSimpleReader)
+                          QIODevice, QTextStream, Qt)
+from PyQt5.QtWidgets import *
+from xml.sax import handler, make_parser
+
+#from PyQt5.QtXml import (QDomDocument, QDomNode, QXmlDefaultHandler,
+#        QXmlInputSource, QXmlSimpleReader)
 
 
 CODEC = "UTF-8"
@@ -640,13 +643,13 @@ class MovieContainer(object):
         fh = None
         try:
             handler = SaxMovieHandler(self)
-            parser = QXmlSimpleReader()
+            parser = make_parser()
             parser.setContentHandler(handler)
             parser.setErrorHandler(handler)
             fh = QFile(fname)
-            input = QXmlInputSource(fh)
+#            input = QXmlInputSource(fh)
             self.clear(False)
-            if not parser.parse(input):
+            if not parser.parse(fh.open(QIODevice.ReadOnly).readAll()):
                 raise ValueError, handler.error
         except (IOError, OSError, ValueError), e:
             error = "Failed to import: {0}".format(e)
@@ -661,7 +664,7 @@ class MovieContainer(object):
                     len(self.__movies), QFileInfo(fname).fileName())
 
 
-class SaxMovieHandler(QXmlDefaultHandler):
+class SaxMovieHandler(handler.ContentHandler):
 
     def __init__(self, movies):
         super(SaxMovieHandler, self).__init__()
@@ -678,7 +681,7 @@ class SaxMovieHandler(QXmlDefaultHandler):
         self.notes = None
 
 
-    def startElement(self, namespaceURI, localName, qName, attributes):
+    def startElement(self, qName, attributes):
         if qName == "MOVIE":
             self.clear()
             self.year = intFromQStr(attributes.value("YEAR"))
@@ -699,7 +702,7 @@ class SaxMovieHandler(QXmlDefaultHandler):
         return True
 
 
-    def endElement(self, namespaceURI, localName, qName):
+    def endElement(self, qName):
         if qName == "MOVIE":
             if (self.year is None or self.minutes is None or
                 self.acquired is None or self.title is None or
